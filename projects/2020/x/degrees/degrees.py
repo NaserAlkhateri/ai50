@@ -57,7 +57,6 @@ def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
     directory = sys.argv[1] if len(sys.argv) == 2 else "large"
-
     # Load data from files into memory
     print("Loading data...")
     load_data(directory)
@@ -94,7 +93,41 @@ def shortest_path(source, target):
     """
 
     # TODO
-    raise NotImplementedError
+    # target_neighbors = neighbors_for_person(target)
+    start = Node(state=source, parent=None, action=None)
+
+    frontier = QueueFrontier()
+    frontier.add(start)
+    explored = set()
+    num_explored = 0
+    while True:
+        if frontier.empty():
+            print("No path found")
+            return None
+
+
+        node = frontier.remove()
+        num_explored += 1
+        if node.state == target:
+            path = []
+
+            while node.parent is not None:
+                current = (node.action, node.state)
+                #print("DEBUG:Current:", current)
+                path.append(current)
+                node = node.parent
+            path.reverse()
+            #print("DEBUG:path:", path)
+            #print("DEBUGnum: ",num_explored)
+            return path
+        explored.add(node.state)
+        #print("DEBUG: fetching {} neighbors".format(node.state))
+        for movie, id in neighbors_for_person(node.state):
+            if not frontier.contains_state(id) and id not in explored:
+                child = Node(state=id, parent=node, action=movie)
+                frontier.add(child)
+
+    # raise NotImplementedError
 
 
 def person_id_for_name(name):
