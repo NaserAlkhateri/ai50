@@ -69,10 +69,6 @@ def winner(board):
     count_O = 0
     # horizontal
     for i in range(3):
-        if count_X == 3:
-            return X
-        elif count_O == 3:
-            return Y
         count_X = 0
         count_O = 0
         for j in range(3):
@@ -80,15 +76,14 @@ def winner(board):
                 count_X += 1
             elif board[i][j] == O:
                 count_O += 1
-
+        if count_X == 3:
+            return X
+        elif count_O == 3:
+            return O
     count_X = 0
     count_O = 0
     # Vertical
     for i in range(3):
-        if count_X == 3:
-            return X
-        elif count_O == 3:
-            return Y
         count_X = 0
         count_O = 0
         for j in range(3):
@@ -96,7 +91,10 @@ def winner(board):
                 count_X += 1
             elif board[j][i] == O:
                 count_O += 1
-
+        if count_X == 3:
+            return X
+        elif count_O == 3:
+            return O
     count_X = 0
     count_O = 0
     #diagnal 1
@@ -105,16 +103,26 @@ def winner(board):
             count_X += 1
         elif board[i][i] == O:
             count_O += 1
-
+        if count_X == 3:
+            return X
+        elif count_O == 3:
+            return O
     count_X = 0
     count_O = 0
     #diagnal 2
+    j = 0
     for i in range(2,-1,-1):
-        if board[i][i] == X:
+        if board[i][j] == X:
             count_X += 1
-        elif board[i][i] == O:
+        elif board[i][j] == O:
             count_O += 1
-    raise NotImplementedError
+        j += 1
+        if count_X == 3:
+            return X
+        elif count_O == 3:
+            return O
+
+    raise None
 
 
 def terminal(board):
