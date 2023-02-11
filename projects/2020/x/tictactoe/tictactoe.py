@@ -54,9 +54,11 @@ def result(board, action):
     Returns the board that results from making move (i, j) on the board.
     """
     i, j = action
+    board_copy = deepcopy(board)
 
     if board[i][j] == EMPTY:
-        return board
+        board_copy[i][j] = player(board)
+        return board_copy
 
     raise ValueError
 
@@ -128,24 +130,54 @@ def winner(board):
 def terminal(board):
     """
     Returns True if game is over, False otherwise.
+    TODO: check if winner?
     """
+
+    #check if there is a winner
+    if winner(board) != None:
+        return True
+
+    #checks if board has an empty cell
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
                 return False
 
-    return True
+    
+
+    return False
 
 
 def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    raise NotImplementedError
+
+    result = winner(board)
+
+    if result == X:
+        return 1
+    elif result == O:
+        return -1
+    
+    return 0
+    #raise NotImplementedError
 
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
+    
+    should try to give it the best action
+
     """
+    if terminal(board):
+        return None
+
+    for action in actions(board):
+        result_min = minmax(result(board,action))
+        if result_min == 1:
+            return action
+
+
     raise NotImplementedError
